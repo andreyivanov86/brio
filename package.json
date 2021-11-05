@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "wdio --spec=upload"
+    "test": "wdio --spec=dynamic_controls"
   },
   "keywords": [],
   "author": "",
