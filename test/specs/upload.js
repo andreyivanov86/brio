@@ -1,16 +1,25 @@
+import Main from "../pageObject/Main.page";
 import Upload from "../pageObject/Upload.page";
+const path = require("path");
 
+const main = new Main();
 const upload = new Upload();
 
 describe("Upload page", () => {
+
     before( async () => {
-        await upload.load();
+        await main.load("./upload");
     });
 
     it("should be displayed", async () => {
-        const elem1 = await $("=File Uploader");
-        const elem2 = await $("#drag-drop-upload");
-        await expect(elem1).toBeDisplayed();
-        await expect(elem2).toBeDisplayed();
+        await expect(browser).toHaveUrl("https://the-internet.herokuapp.com/upload");
+    });
+
+    it("should upload a file", async () => {
+        const pathToFile = path.resolve(path.basename(__dirname), "../test/fixtures/uploadFile.txt" )
+        const remoteFilePath = await browser.uploadFile(pathToFile);
+        await upload.fileUploadBtn.setValue(remoteFilePath);
+        await upload.fileSubmitBtn.click();
+        await expect(upload.fileUploadHeader).toHaveText("File Uploaded!");
     });
 })

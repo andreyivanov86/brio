@@ -8,8 +8,8 @@ class Main {
     get dragAndDropLink() { return $("a=Drag and Drop") };
     get dynamicControlsLink() { return $("a=Dynamic Controls") };
 
-    async load() {
-        await browser.url("./");
+    async load(path) {
+        await browser.url(path);
     }
 }
 

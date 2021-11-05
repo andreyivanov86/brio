@@ -11,7 +11,7 @@ const dynamicControls = new DynamicControls();
 describe("Page", () => {
 
     beforeEach(async () => {
-        await main.load();
+        await main.load("./");
     }); 
 
     it("should navigate", async ()=> {
