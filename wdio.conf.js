@@ -1,5 +1,12 @@
 import allure from "allure-commandline";
 
+const getCoordsForElement = async (elementId) => {
+    const rect = await browser.getElementRect(elementId);
+    const X = parseInt(rect.x + (rect.width / 2), 10);
+    const Y = parseInt(rect.y + (rect.height / 2), 10);
+    return [X, Y];
+};
+
 export const config = {
     //
     // ====================
@@ -203,8 +210,58 @@ export const config = {
      * @param {Object}         browser      instance of created browser/device session
      */
     before: function (capabilities, specs) {
-        browser.addCommand("dragNdrop", async () => {
-            console.log("LOG", "Cystom command");
+        browser.addCommand("dragNdrop", async (element, target) => {
+            await element.waitForClickable();
+            await target.waitForClickable();
+
+            await browser.performActions([
+                {
+                  type: 'pointer',
+                  id: 'finger1',
+                  parameters: { pointerType: 'mouse' },
+                  actions: [
+                    { type: 'pointerMove', origin: element, x: 0, y: 0 },
+                    { type: 'pointerDown', button: 0 },
+                    { type: 'pointerMove', origin: 'pointer', x: 100, y: 100, duration: 10 },
+                  ],
+                },
+            ]);
+    
+            await browser.execute(
+                function (elemDrag, elemDrop) {
+                  const pos = elemDrop.getBoundingClientRect()
+                  const center2X = Math.floor((pos.left + pos.right) / 2)
+                  const center2Y = Math.floor((pos.top + pos.bottom) / 2)
+            
+                  function fireMouseEvent(type, relatedTarget, clientX, clientY) {
+                    const evt = new MouseEvent(type, { clientX, clientY, relatedTarget, bubbles: true })
+                    relatedTarget.dispatchEvent(evt)
+                  }
+            
+                  fireMouseEvent('dragover', elemDrop, center2X, center2Y)
+                  fireMouseEvent('dragend', elemDrag, center2X, center2Y)
+                  fireMouseEvent('mouseup', elemDrag, center2X, center2Y)
+                }, element, target
+            )
+            // await element.moveTo();
+            // // await browser.buttonDown(0);
+            // await browser.performActions([{
+            //     type: 'pointer',
+            //     id: 'pointer1',
+            //     parameters: { pointerType: 'mouse' },
+            //     actions: [
+            //         { type: 'pointerDown', button: 0 },
+            //     ]
+            // }])
+            // await target.moveTo();
+            // await browser.performActions([{
+            //     type: 'pointer',
+            //     id: 'pointer1',
+            //     parameters: { pointerType: 'mouse' },
+            //     actions: [
+            //         { type: 'pointerUp', button: 0 },
+            //     ]
+            // }])
         })
     },
     /**

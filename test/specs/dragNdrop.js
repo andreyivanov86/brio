@@ -12,7 +12,15 @@ describe("Drag and Drop page", () => {
     });
 
     it("should use custom drag and drop", async () => {
-        await browser.dragNdrop();
+        const a = await $("#column-a");
+        const columnAheader = await $("#column-a header")
+        const b = await $("#column-b");
+        await browser.dragNdrop(a, b);
+
+        
+
+        await expect(columnAheader).toHaveText("B");
+        await browser.pause(3000);
     })
 
 })
