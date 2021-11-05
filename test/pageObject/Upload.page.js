@@ -1,4 +1,5 @@
 import Main from "./Main.page";
+const path = require("path");
 
 class Upload extends Main {
     constructor() {
