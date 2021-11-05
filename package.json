@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "wdio --spec=dragNdrop"
+    "test.all": "wdio --suite smoke",
+    "test.nav": "wdio --suite navigation",
+    "test.upload": "wdio --suite fileUpload",
+    "test.dynamic_controls": "wdio --suite dynamic_controls",
+    "test.dragNdrop": "wdio --suite drag_and_drop"
   },
   "keywords": [],
   "author": "",

@@ -29,6 +29,19 @@ export const config = {
     exclude: [
         // 'path/to/excluded/files'
     ],
+    //Define Suites
+    suites: {
+        smoke: [
+            "./test/specs/navigation.js",
+            "./test/specs/upload.js",
+            "./test/specs/dynamic_controls.js",
+            "./test/specs/dragNdrop.js"            
+        ],
+        navigation: ["./test/specs/navigation.js"],
+        fileUpload: ["./test/specs/upload.js"],
+        dynamic_controls: ["./test/specs/dynamic_controls.js"],
+        drag_and_drop: ["./test/specs/dragNdrop.js"]
+    },
     //
     // ============
     // Capabilities
@@ -234,7 +247,7 @@ export const config = {
      * @param {Boolean} result.passed    true if test has passed, otherwise false
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    afterTest: async function (test, scenario, { error}) {
+    afterTest: async function (test, scenario, {error}) {
         if (error) {
           await browser.takeScreenshot();
         }
