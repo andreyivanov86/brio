@@ -1,26 +1,22 @@
 import Main from "../pageObject/Main.page";
+import DragAndDrop from "../pageObject/DragAndDrop.page";
+
 const main = new Main();
+const dnd = new DragAndDrop();
 
 describe("Drag and Drop page", () => {
-
+    //open the drag and drop page
     before( async () => {
         await main.load("./drag_and_drop");
     });
-
+    //check the page is open
     it("should be displayed", async () => {
         await expect(browser).toHaveUrl("https://the-internet.herokuapp.com/drag_and_drop");
     });
 
     it("should use custom drag and drop", async () => {
-        const a = await $("#column-a");
-        const columnAheader = await $("#column-a header")
-        const b = await $("#column-b");
-        await browser.dragNdrop(a, b);
-
-        
-
+        //use custom command to drag and drop
+        await browser.dragNdrop(dnd.columnA, dnd.columnB);
         await expect(columnAheader).toHaveText("B");
-        await browser.pause(3000);
     })
-
 })
